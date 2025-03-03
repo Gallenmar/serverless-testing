@@ -1,0 +1,14 @@
+{
+	"name": "serverless-testing",
+	"version": "1.0.0",
+	"description": "",
+	"dependencies": {
+		"@libsql/client": "^0.14.0",
+		"drizzle-orm": "^0.40.0",
+		"express": "^4.19.2",
+		"serverless-http": "^3.2.0"
+	},
+	"devDependencies": {
+		"drizzle-kit": "^0.30.5"
+	}
+}
