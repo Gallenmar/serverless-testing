@@ -2,6 +2,10 @@
 	"name": "serverless-testing",
 	"version": "1.0.0",
 	"description": "",
+	"scripts": {
+		"dev": "serverless offline --stage dev",
+		"deploy": "serverless deploy --stage prod"
+	},
 	"dependencies": {
 		"@libsql/client": "^0.14.0",
 		"drizzle-orm": "^0.40.0",
@@ -9,6 +13,7 @@
 		"serverless-http": "^3.2.0"
 	},
 	"devDependencies": {
-		"drizzle-kit": "^0.30.5"
+		"drizzle-kit": "^0.30.5",
+		"serverless-offline": "^14.4.0"
 	}
 }

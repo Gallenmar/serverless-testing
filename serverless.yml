@@ -7,10 +7,16 @@ service: serverless-testing
 
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs22.x
+  environment:
+    DB_URL: ${env:DB_URL}
+    DB_KEY: ${env:DB_KEY}
 
 functions:
   api:
-    handler: handler.handler
+    handler: src/handler.handler
     events:
       - httpApi: "*"
+
+plugins:
+  - serverless-offline

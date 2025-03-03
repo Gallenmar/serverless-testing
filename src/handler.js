@@ -2,9 +2,23 @@ const serverless = require("serverless-http");
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res, next) => {
+const { createClient } = require("@libsql/client/web");
+
+const turso = createClient({
+	url: process.env.DB_URL,
+	authToken: process.env.DB_KEY,
+});
+
+const dbClient = () => {
+	return turso;
+};
+
+app.get("/", async (req, res, next) => {
+	const db = dbClient();
+	const { rows } = await db.execute("SELECT datetime('now') as now");
 	return res.status(200).json({
 		message: "Hello from root!",
+		result: rows[0].now,
 	});
 });
 
