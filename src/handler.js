@@ -12,7 +12,7 @@ app.get("/", async (req, res, next) => {
 	});
 });
 
-app.get("/hello", (req, res, next) => {
+app.get("/counters", (req, res, next) => {
 	return res.status(200).json({
 		message: "Hello from path!",
 	});
