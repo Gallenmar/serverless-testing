@@ -1,7 +1,7 @@
 const serverless = require("serverless-http");
 const express = require("express");
 
-const getDbClient = require("./db/client");
+const { getDbClient } = require("./db/client");
 const crud = require("./db/crud");
 
 const app = express();

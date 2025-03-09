@@ -1,8 +1,8 @@
-const { createClient } = require("@libsql/client");
-const { drizzle } = require("drizzle-orm/libsql");
+const { createClient } = require("@libsql/client/web");
+const { drizzle } = require("drizzle-orm/libsql/web");
 const dotenv = require("dotenv");
 
-dotenv.config({ path: ".env.dev" });
+dotenv.config({ path: ".env.prod" });
 
 const tursoClient = createClient({
 	url: process.env.DB_URL,
