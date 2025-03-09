@@ -1,5 +1,5 @@
-const { createClient } = require("@libsql/client");
-const { drizzle } = require("drizzle-orm/libsql");
+const { createClient } = require("@libsql/client/web");
+const { drizzle } = require("drizzle-orm/libsql/web");
 
 const dotenv = require("dotenv");
 
