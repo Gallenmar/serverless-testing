@@ -1,8 +1,19 @@
 const { createClient } = require("@libsql/client");
 const { drizzle } = require("drizzle-orm/libsql");
+
 const dotenv = require("dotenv");
 
-dotenv.config({ path: ".env.dev" });
+dotenv.config({ path: ".env" });
+console.log("STAGE:", process.env.STAGE);
+if (process.env.STAGE === "DEV") {
+	console.log("Using dev environment");
+	dotenv.config({ path: ".env.dev" });
+} else if (process.env.STAGE === "PROD") {
+	console.log("Using prod environment");
+	dotenv.config({ path: ".env.prod" });
+} else {
+	console.log("Stage not set");
+}
 
 const tursoClient = createClient({
 	url: process.env.DB_URL,

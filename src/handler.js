@@ -1,8 +1,11 @@
 const serverless = require("serverless-http");
 const express = require("express");
+const dotenv = require("dotenv");
 
-const getDbClient = require("./db/client");
+const { getDbClient } = require("./db/client");
 const crud = require("./db/crud");
+
+dotenv.config({ path: ".env" });
 
 const app = express();
 app.use(express.json());
@@ -48,8 +51,11 @@ app.use((req, res, next) => {
 	});
 });
 
-// app.listen(3000, () => {
-// 	console.log("Server is running on port 3000");
-// });
-
-exports.handler = serverless(app);
+if (process.env.MODE === "serverless") {
+	module.exports.handler = serverless(app);
+} else {
+	const PORT = process.env.PORT || 3000;
+	app.listen(PORT, () => {
+		console.log(`Server is running on port ${PORT}`);
+	});
+}

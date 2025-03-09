@@ -9,17 +9,18 @@
 		"info": "serverless info --stage prod",
 		"generate": "env-cmd -f .env.dev drizzle-kit generate",
 		"migrate-prod": "env-cmd -f .env.prod drizzle-kit migrate",
-		"migrate-dev": "env-cmd -f .env.dev drizzle-kit migrate"
+		"migrate-dev": "env-cmd -f .env.dev drizzle-kit migrate",
+		"start": "node src/handler.js"
 	},
 	"dependencies": {
 		"@libsql/client": "^0.14.0",
 		"drizzle-orm": "^0.40.0",
+		"dotenv": "^16.4.7",
 		"express": "^4.19.2",
 		"serverless-http": "^3.2.0"
 	},
 	"devDependencies": {
 		"cross-env": "^7.0.3",
-		"dotenv": "^16.4.7",
 		"drizzle-kit": "^0.30.5",
 		"env-cmd": "^10.1.0",
 		"serverless-offline": "^14.4.0",
