@@ -44,3 +44,17 @@ npm install --production
 ```
 npm run start
 ```
+
+# Steps to run k6 tests
+
+0. Install k6. Look at k6 documentation for specific instructions for your os.
+   https://grafana.com/docs/k6/latest/set-up/install-k6/
+1. cd into tests directory
+2. run tests
+
+```
+k6 run test-file-name.js
+```
+
+Warning:
+Tests do not appear work locally for serverless platform
