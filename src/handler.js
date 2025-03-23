@@ -13,6 +13,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async (req, res, next) => {
 	const db = getDbClient();
+	return res.status(200).json({
+		result: "Hello World",
+	});
+});
+
+app.get("/db", async (req, res, next) => {
+	const db = getDbClient();
 	const { rows } = await db.execute("SELECT datetime('now') as now");
 	return res.status(200).json({
 		result: rows[0].now,
@@ -55,7 +62,7 @@ if (process.env.MODE === "serverless") {
 	module.exports.handler = serverless(app);
 } else {
 	const PORT = process.env.PORT || 3000;
-	app.listen(PORT, () => {
+	app.listen(PORT, "0.0.0.0", () => {
 		console.log(`Server is running on port ${PORT}`);
 	});
 }
