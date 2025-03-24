@@ -2,8 +2,9 @@ import http from "k6/http";
 import { check } from "k6";
 
 const local = "http://localhost:3000/counters/";
-const lambda = "https://qnlzsbk4ri.execute-api.us-east-1.amazonaws.com/db/";
-const ec2 = "http://3.95.212.207:3000/db/";
+const lambda =
+	"https://qnlzsbk4ri.execute-api.us-east-1.amazonaws.com/dbwait/50to400ms/";
+const ec2 = "http://3.95.212.207:3000/counters/";
 const url = ec2;
 
 export function setup() {

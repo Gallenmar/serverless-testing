@@ -20,3 +20,8 @@ functions:
 
 plugins:
   - serverless-offline
+
+package:
+  exclude:
+    - "**/*.csv"
+    - "**/*.png"
