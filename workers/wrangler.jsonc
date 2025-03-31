@@ -1,0 +1,13 @@
+{
+	"name": "serverless-testing",
+	"main": "src/index.js",
+	"compatibility_date": "2025-03-31",
+	"compatibility_flags": ["nodejs_compat"],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": "./public"
+	},
+	"observability": {
+		"enabled": true
+	}
+}

@@ -1,44 +1,55 @@
-const dotenv = require("dotenv");
-
-dotenv.config({ path: ".env" });
-console.log("STAGE:", process.env.STAGE);
-
-if (process.env.STAGE === "DEV") {
-	console.log("Using dev environment");
-	dotenv.config({ path: ".env.dev" });
-} else if (process.env.STAGE === "PROD") {
-	console.log("Using prod environment");
-	dotenv.config({ path: ".env.prod" });
-} else {
-	console.log("Stage not set");
-}
+const { getEnvVars, isCloudflareWorker } = require("../../utils/getEnvVars");
 
 let createClient, drizzle;
-if (process.env.STAGE === "DEV") {
+
+// Dynamic imports based on environment
+// todo make sure this works in ec2
+if (!isCloudflareWorker()) {
+	console.log("Initializing client for Node.js environment");
 	const libsql = require("@libsql/client");
 	const drizzleOrm = require("drizzle-orm/libsql");
 	createClient = libsql.createClient;
 	drizzle = drizzleOrm.drizzle;
 } else {
+	console.log("Initializing client for Cloudflare Workers environment");
 	const libsql = require("@libsql/client/web");
 	const drizzleOrm = require("drizzle-orm/libsql/web");
 	createClient = libsql.createClient;
 	drizzle = drizzleOrm.drizzle;
 }
 
-const tursoClient = createClient({
-	url: process.env.DB_URL,
-	authToken: process.env.DB_KEY,
-});
+let tursoClient = null;
 
-const getDbClient = () => {
+const initializeClient = (env) => {
+	const vars = getEnvVars(env);
+	console.log(`Initializing client in ${vars.STAGE} environment`);
+
+	if (!vars.DB_URL) {
+		throw new Error(
+			`Database URL is not configured for ${vars.STAGE} environment`
+		);
+	}
+
+	tursoClient = createClient({
+		url: vars.DB_URL,
+		authToken: vars.DB_KEY,
+	});
+
 	return tursoClient;
 };
 
-const db = drizzle(tursoClient);
+const getDbClient = (env) => {
+	if (!tursoClient) {
+		initializeClient(env);
+	}
+	return tursoClient;
+};
 
-const getDrizzleClient = () => {
-	return db;
+const getDrizzleClient = (env) => {
+	if (!tursoClient) {
+		initializeClient(env);
+	}
+	return drizzle(tursoClient);
 };
 
 module.exports = {
