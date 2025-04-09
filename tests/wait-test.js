@@ -1,10 +1,12 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
 
-const local = "http://localhost:3000/counters/";
-const lambda = "https://qnlzsbk4ri.execute-api.us-east-1.amazonaws.com/db/";
-const ec2 = "http://3.95.212.207:3000/db/";
-const url = lambda;
+const local = "http://localhost:3000/";
+const lambda = "https://paste your url here.eu-central-1.amazonaws.com/";
+const lambda_us = "https://paste your url here.us-east-1.amazonaws.com/";
+const ec2 = "http://paste your url here/";
+const worker = "https://paste your url here.workers.dev/";
+const url = worker + "counters";
 
 export function setup() {
 	console.log(`Testing URL: ${url}`);
@@ -52,7 +54,7 @@ function makeRequestWithRetry(url, maxRetries = 3) {
 				},retry`
 			);
 			sleep(delay);
-			cumulativeTime += delay * 1000;
+			cumulativeTime += delay * 100;
 			continue;
 		}
 	}

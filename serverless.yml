@@ -8,6 +8,8 @@ service: serverless-testing
 provider:
   name: aws
   runtime: nodejs22.x
+  region: eu-central-1
+  # region: us-east-1
   environment:
     DB_URL: ${env:DB_URL}
     DB_KEY: ${env:DB_KEY}

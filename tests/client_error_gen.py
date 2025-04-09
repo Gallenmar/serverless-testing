@@ -6,7 +6,7 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 data_sources = {
-    'Lambda': {'file': 'results/wating_2.csv', 'color': '#ff9933'},
+    'Lambda': {'file': 'new_results/1000_10_wdb_lambda_us_wait_client.csv', 'color': '#ff9933'},
     'EC2': {'file': 'results/1000_10_wdb_ec2.csv', 'color': '#3498db'}
 }
 title = "Augstas slodzes tests ar datubāzi - Lambda vs EC2"
@@ -34,7 +34,7 @@ for name, source in data_sources.items():
     df = pd.read_csv(file_path)
     
     if name == "Lambda":
-        duration_values = df["cumulaive_duration"] / 1000
+        duration_values = df["cumulative_duration"] / 1000
         duration_data = df
     else:
         duration_data = df[df["metric_name"].str.contains("http_req_duration", regex=True, na=False)]

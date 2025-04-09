@@ -3,8 +3,7 @@ const { getEnvVars, isCloudflareWorker } = require("../../utils/getEnvVars");
 let createClient, drizzle;
 
 // Dynamic imports based on environment
-// todo make sure this works in ec2
-if (!isCloudflareWorker()) {
+if (getEnvVars().MODE === "serverfull") {
 	console.log("Initializing client for Node.js environment");
 	const libsql = require("@libsql/client");
 	const drizzleOrm = require("drizzle-orm/libsql");
@@ -39,10 +38,16 @@ const initializeClient = (env) => {
 };
 
 const getDbClient = (env) => {
-	if (!tursoClient) {
-		initializeClient(env);
+	try {
+		if (!tursoClient) {
+			initializeClient(env);
+		}
+		return tursoClient;
+	} catch (error) {
+		console.error("Failed to get database client:", error);
+		// Make sure to reject with error rather than hanging
+		throw error;
 	}
-	return tursoClient;
 };
 
 const getDrizzleClient = (env) => {

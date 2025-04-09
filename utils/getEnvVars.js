@@ -1,16 +1,22 @@
 // Helper to check which environment we're running in
-const isCloudflareWorker = () => {
+const isCloudflareWorker = (env) => {
 	console.log("Checking if we're running in Cloudflare Workers");
-	console.log("process:", process.env);
-	return typeof process.env.MODE === "undefined";
+	return true; // TODO: Make a robust check for Cloudflare Workers env
 };
 
 // Helper to get environment stage
 const getStage = (env) => {
-	if (isCloudflareWorker()) {
-		return env?.STAGE || "PROD";
+	if (isCloudflareWorker(env)) {
+		return env?.STAGE || "NONE1";
 	}
-	return process.env.STAGE || "PROD";
+	const stage = process.env.STAGE || "NONE2";
+	if (stage === "NONE2") {
+		const dotenv = require("dotenv");
+		dotenv.config();
+		return process.env.STAGE || "NONE3";
+	} else {
+		return stage;
+	}
 };
 
 // Main environment variables getter

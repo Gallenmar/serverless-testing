@@ -5,11 +5,25 @@ import os
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
+# data_sources = {
+#     'Lambda': {'file': 'new_results/10_10_wdb_lambda.csv', 'color': '#ffd700', 'axis': 'bottom'},
+#     'EC2': {'file': 'new_results/10_10_wdb_ec2.csv', 'color': '#2271b3', 'axis': 'top'},
+#     'Workers': {'file': 'new_results/10_10_wdb_worker.csv', 'color': '#ff7f0e', 'axis': 'bottom'}
+# }
+# title = "Zemas slodzes tests ar datubāzi - Lambda vs EC2 vs Workers"
+
+# data_sources = {
+#     'Lambda ASV': {'file': 'new_results/10_10_nodb_lambda_us_location.csv', 'color': '#ffd700', 'axis': 'bottom'},
+#     'Lambda ES': {'file': 'new_results/10_10_nodb_lambda_eu_location.csv', 'color': '#ff7f0e', 'axis': 'top'}
+# }
+# title = "Lokacijas tests bez datubāzes - Lambda ASV vs Lambda ES" 
+
 data_sources = {
-    'Lambda': {'file': 'results/10_10_nodb_lambda.csv', 'color': '#ff9933', 'axis': 'bottom'},
-    'EC2': {'file': 'results/10_10_nodb_ec2.csv', 'color': '#3498db', 'axis': 'top'}
+    'Workers': {'file': 'new_results/soak_worker.csv', 'color': '#ff7f0e', 'axis': 'bottom'},
+    'Lambda': {'file': 'new_results/soak_lambda.csv', 'color': '#ffd700', 'axis': 'bottom'},
+    'EC2': {'file': 'new_results/soak_ec2.csv', 'color': '#2271b3', 'axis': 'top'}
 }
-title = "Zemas slodzes tests bez datubāzes - Lambda vs EC2"
+title = "Izturības tests tests ar datubāzi - Workers"
 
 fig, ax1 = plt.subplots(figsize=(12, 6))
 ax2 = ax1.twiny()
@@ -42,25 +56,29 @@ for name, source in data_sources.items():
     ax.set_xlim(0, len(request_numbers))
     
     if source['axis'] == 'bottom':
-        ax.set_xlabel(f'Lambda pieprasījumu skaits', color=source['color'])
-        ax.tick_params(axis='x', colors=source['color'])
+        ax.set_xlabel(f'Lambda ASV pieprasījumu skaits', color=source['color'])
+        ax.tick_params(axis='x', colors=source['color']) 
     else:
-        ax.set_xlabel(f'EC2 pieprasījumu skaits', color=source['color'])
+        ax.set_xlabel(f'Lambda ES pieprasījumu skaits', color=source['color'])
         ax.tick_params(axis='x', colors=source['color'])
     
     print(f"\n{name} Statistika:")
+    print(f"Minimālais ilgums: {np.min(duration_values):.3f} s")
     print(f"Vidējais ilgums: {np.mean(duration_values):.3f} s")
     print(f"Mediāna: {np.median(duration_values):.3f} s")
     print(f"95. percentilis: {np.percentile(duration_values, 95):.3f} s")
     print(f"99. percentilis: {np.percentile(duration_values, 99):.3f} s")
+    print(f"Maksimālais ilgums: {np.max(duration_values):.3f} s")
     print(f"Kopējais pieprasījumu skaits: {len(duration_values)}")
 
-ax1.set_yscale('log')
+ax1.set_ylim(bottom=0, top=max_duration*1.1)
 ax1.axhline(y=max_duration, color='gray', linestyle=':', label=f'Maksimalais laiks: {max_duration:.2f} sekundes', zorder=1)
 ax1.set_ylabel('HTTP pieprasījuma ilgums (sekundes)')
-ax1.grid(True, which="both", ls="-", alpha=0.2)
+ax1.grid(True, ls="-", alpha=0.2)
+
 def seconds_formatter(x, p):
-    return f'{x:.0f}s'
+    return f'{x:.3f}s'
+
 ax1.yaxis.set_major_formatter(plt.FuncFormatter(seconds_formatter))
 
 plt.title(title)

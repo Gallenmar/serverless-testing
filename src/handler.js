@@ -66,6 +66,12 @@ app.post("/counters", async (req, res) => {
 	return res.status(response.status).json(response.body);
 });
 
+app.post("/warehouse", async (req, res) => {
+	const items = req.body.items || [];
+	const response = await functions.warehouseOperation(null, items);
+	return res.status(response.status).json(response.body);
+});
+
 // 404 handler
 app.use((req, res) => {
 	return res.status(404).json({
@@ -74,8 +80,10 @@ app.use((req, res) => {
 });
 
 if (vars.MODE === "serverless") {
+	console.log("Running in serverless mode", vars.MODE);
 	module.exports.handler = serverless(app);
 } else {
+	console.log("Running in another mode", vars.MODE);
 	const PORT = vars.PORT;
 	app.listen(PORT, "0.0.0.0", () => {
 		console.log(`Server is running on port ${PORT}`);
