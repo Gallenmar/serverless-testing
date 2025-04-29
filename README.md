@@ -1,5 +1,9 @@
 # Serverless Framework Node Express API on AWS
 
+
+Code for my bachelors on testing serverless architecture vs traditional
+
+
 ## Deployment on serverless
 
 Install dependencies with:
